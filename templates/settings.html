@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>配置中心 - TG Monitor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            900: '#1a1b1e',
+                            800: '#25262b',
+                            700: '#2c2e33',
+                            600: '#373a40',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #1a1b1e;
+            color: #e4e5e7;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .card {
+            background-color: #25262b;
+            border: 1px solid #373a40;
+            border-radius: 0.5rem;
+        }
+
+        .input-dark {
+            background-color: #1a1b1e;
+            border: 1px solid #373a40;
+            color: white;
+        }
+
+        .btn {
+            transition: all 0.2s;
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        .nav-item {
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #9ca3af;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background-color: #373a40;
+            color: white;
+        }
+
+        /* Tag Input Styles */
+        .tag {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 9999px;
+            padding: 0.125rem 0.75rem;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            animation: fadeIn 0.15s ease-out;
+        }
+
+        .tag button {
+            opacity: 0.7;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: inherit;
+            font-size: 1rem;
+        }
+
+        .tag button:hover {
+            opacity: 1;
+            color: #93c5fd;
+        }
+
+        .tag-input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: white;
+            flex: 1;
+            min-width: 80px;
+            font-family: monospace;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex">
+
+    <!-- Sidebar -->
+    <div class="w-64 bg-[#25262b] border-r border-[#373a40] flex flex-col p-4 fixed h-full">
+        <div class="mb-8 px-2">
+            <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-400">TG
+                Monitor</h1>
+            <p class="text-xs text-gray-500 mt-1">控制台 & 配置中心</p>
+        </div>
+
+        <nav class="space-y-2 flex-1">
+            <a href="/" class="nav-item">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z">
+                    </path>
+                </svg>
+                仪表盘
+            </a>
+            <a href="/settings" class="nav-item active">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+                    </path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                全局配置
+            </a>
+        </nav>
+
+        <div class="px-2 space-y-2">
+            <button onclick="handleLogout()" class="w-full text-left nav-item text-red-400 hover:bg-red-500/10">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                    </path>
+                </svg>
+                登出
+            </button>
+            <div class="text-xs text-gray-600">v2.0.0</div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 ml-64 p-8 overflow-y-auto">
+        <div class="max-w-4xl mx-auto space-y-6">
+
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-2xl font-bold">配置中心</h1>
+                <button onclick="saveConfig()"
+                    class="btn px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded font-medium flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-4 4m0 0l-4-4m4 4V4">
+                        </path>
+                    </svg>
+                    保存并应用
+                </button>
+            </div>
+
+            <!-- Monitoring Settings -->
+            <div class="card p-6 shadow-lg">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-bold text-blue-400">监控规则 (分频道配置)</h2>
+                    <button onclick="addChannel()"
+                        class="text-sm px-3 py-1 bg-blue-600/20 text-blue-400 hover:bg-blue-600/30 rounded border border-blue-600/30 transition-all">+
+                        添加频道</button>
+                </div>
+
+                <div id="channels-container" class="space-y-4">
+                    <!-- Dynamic Channel Items will be inserted here -->
+                </div>
+
+                <p class="text-xs text-gray-500 mt-4 text-center">每行一个频道。在关键词框中输入后按 <b>Enter</b> 或 <b>逗号</b> 生成标签。</p>
+            </div>
+
+            <!-- Bot Settings -->
+            <div class="card p-6 shadow-lg">
+                <h2 class="text-lg font-bold mb-4 text-purple-400">机器人配置 (Telegram)</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-1">Telegram Bot Token</label>
+                        <input type="password" id="telegram_bot_token"
+                            class="input-dark w-full p-3 rounded focus:ring-2 focus:ring-purple-500 outline-none">
+                        <p class="text-xs text-gray-500 mt-1">从 @BotFather 获取的 Token</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-1">你的 Chat ID</label>
+                        <input type="text" id="telegram_chat_id"
+                            class="input-dark w-full p-3 rounded focus:ring-2 focus:ring-purple-500 outline-none">
+                        <p class="text-xs text-gray-500 mt-1">接收通知的用户 ID</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Template for Channel Item -->
+    <template id="channel-template">
+        <div
+            class="channel-item bg-[#1a1b1e] p-4 rounded border border-[#373a40] relative group transition-all hover:border-blue-500/30">
+            <button onclick="removeChannel(this)"
+                class="absolute top-2 right-2 text-gray-600 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                    </path>
+                </svg>
+            </button>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- ID/Username Input -->
+                <div class="md:col-span-1">
+                    <label class="block text-xs text-gray-500 mb-1 font-bold">频道 ID / Username</label>
+                    <input type="text"
+                        class="input-chat-id input-dark w-full p-2.5 rounded focus:ring-1 focus:ring-blue-500 outline-none font-mono text-sm"
+                        placeholder="e.g. nodeseekc">
+                </div>
+
+                <!-- Tag Input Area -->
+                <div class="md:col-span-2">
+                    <label class="block text-xs text-gray-500 mb-1 font-bold">关键词 (Enter 添加)</label>
+                    <div class="tag-input-container input-dark rounded min-h-[46px] flex flex-wrap items-center gap-2 p-2 focus-within:ring-1 focus-within:ring-blue-500"
+                        onclick="this.querySelector('.tag-input').focus()">
+                        <!-- Tags will be inserted here -->
+                        <input type="text" class="tag-input text-sm" placeholder="输入关键词"
+                            onkeydown="handleTagKeydown(event)">
+                    </div>
+                    <!-- Hidden input to store values for easy access -->
+                    <input type="hidden" class="input-keywords-hidden">
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        // ========== Tag Input Logic ==========
+
+        function createTag(text, container) {
+            const tag = document.createElement('div');
+            tag.className = 'tag';
+            tag.innerHTML = `<span>${text}</span><button onclick="removeThisTag(this)">&times;</button>`;
+            const input = container.querySelector('.tag-input');
+            container.insertBefore(tag, input);
+            updateHiddenInput(container);
+        }
+
+        function removeThisTag(btn) {
+            const container = btn.closest('.tag-input-container');
+            btn.closest('.tag').remove();
+            updateHiddenInput(container);
+        }
+
+        function handleTagKeydown(e) {
+            if (e.isComposing) return; // Ignore IME composition
+
+            const input = e.target;
+            const val = input.value.trim();
+            const container = input.closest('.tag-input-container');
+
+            if ((e.key === 'Enter' || e.key === ',') && val) {
+                e.preventDefault();
+                createTag(val, container);
+                input.value = '';
+            } else if (e.key === 'Backspace' && !val) {
+                const tags = container.querySelectorAll('.tag');
+                if (tags.length > 0) {
+                    tags[tags.length - 1].remove();
+                    updateHiddenInput(container);
+                }
+            }
+        }
+
+        function updateHiddenInput(container) {
+            const tags = Array.from(container.querySelectorAll('.tag span')).map(s => s.innerText);
+            const channelItem = container.closest('.channel-item') || container.closest('[class*="md:col-span"]').parentElement.parentElement;
+            const hidden = channelItem.querySelector('.input-keywords-hidden');
+            if (hidden) hidden.value = tags.join(',');
+        }
+
+        // ========== Config Logic ==========
+
+        async function loadConfig() {
+            try {
+                const res = await fetch('/api/config');
+                const data = await res.json();
+
+                console.log('Loaded config:', data);
+
+                document.getElementById('telegram_bot_token').value = data.telegram_bot_token || '';
+                document.getElementById('telegram_chat_id').value = data.telegram_chat_id || '';
+
+                const container = document.getElementById('channels-container');
+                container.innerHTML = '';
+
+                if (data.channels && data.channels.length > 0) {
+                    data.channels.forEach(ch => addChannelRow(ch.id, ch.keywords));
+                } else {
+                    addChannelRow('', '');
+                }
+
+            } catch (e) {
+                console.error("Failed to load config", e);
+                // Still add an empty row so UI is usable
+                addChannelRow('', '');
+            }
+        }
+
+        function addChannel() {
+            addChannelRow('', '');
+        }
+
+        function addChannelRow(id, keywordsStr) {
+            const container = document.getElementById('channels-container');
+            const template = document.getElementById('channel-template');
+            const clone = template.content.cloneNode(true);
+
+            // Set ID
+            clone.querySelector('.input-chat-id').value = id || '';
+
+            // Set Tags - use specific class
+            const tagInputContainer = clone.querySelector('.tag-input-container');
+            if (keywordsStr) {
+                keywordsStr.split(',').forEach(k => {
+                    if (k.trim()) createTag(k.trim(), tagInputContainer);
+                });
+            }
+
+            container.appendChild(clone);
+        }
+
+        function removeChannel(btn) {
+            if (confirm('确定删除此频道的监控配置吗？')) {
+                btn.closest('.channel-item').remove();
+            }
+        }
+
+        async function saveConfig() {
+            const btn = document.querySelector('button[onclick="saveConfig()"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '保存中...';
+            btn.disabled = true;
+
+            const channelItems = document.querySelectorAll('.channel-item');
+            const channels = [];
+
+            channelItems.forEach(item => {
+                const id = item.querySelector('.input-chat-id').value.trim();
+                const keywords = item.querySelector('.input-keywords-hidden').value.trim();
+
+                if (id) {
+                    channels.push({
+                        id: id,
+                        keywords: keywords,
+                        enabled: true
+                    });
+                }
+            });
+
+            const payload = {
+                telegram_bot_token: document.getElementById('telegram_bot_token').value,
+                telegram_chat_id: document.getElementById('telegram_chat_id').value,
+                channels: channels
+            };
+
+            try {
+                await fetch('/api/config', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                await fetch('/api/restart', { method: 'POST' });
+                alert('配置已保存，Bot 已重启生效！');
+            } catch (e) {
+                alert('保存失败：' + e);
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        // Logout handler
+        async function handleLogout() {
+            if (confirm('确定要登出吗?')) {
+                await fetch('/api/logout', { method: 'POST' });
+                window.location.href = '/login';
+            }
+        }
+
+        // Initialize on page load
+        loadConfig();
+    </script>
+</body>
+
+</html>

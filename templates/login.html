@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 - TG Monitor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            900: '#1a1b1e',
+                            800: '#25262b',
+                            700: '#2c2e33',
+                            600: '#373a40',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1b1e 0%, #2c2e33 100%);
+            color: #e4e5e7;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .card {
+            background-color: #25262b;
+            border: 1px solid #373a40;
+            border-radius: 0.5rem;
+        }
+
+        .input-dark {
+            background-color: #1a1b1e;
+            border: 1px solid #373a40;
+            color: white;
+        }
+
+        .btn {
+            transition: all 0.2s;
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <div class="w-full max-w-md">
+        <!-- Logo -->
+        <div class="text-center mb-8">
+            <h1
+                class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-400 mb-2">
+                TG Monitor
+            </h1>
+            <p class="text-gray-500 text-sm">请输入密码以访问控制台</p>
+        </div>
+
+        <!-- Login Card -->
+        <div class="card p-8 shadow-2xl">
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="mb-6">
+                    <label class="block text-sm text-gray-400 mb-2">访问密码</label>
+                    <input type="password" id="password"
+                        class="input-dark w-full p-3 rounded focus:ring-2 focus:ring-blue-500 outline-none"
+                        placeholder="请输入密码" autofocus required>
+                </div>
+
+                <!-- Error Message -->
+                <div id="errorMsg"
+                    class="hidden mb-4 p-3 bg-red-500/10 border border-red-500/30 rounded text-red-400 text-sm">
+                    密码错误，请重试
+                </div>
+
+                <button type="submit"
+                    class="btn w-full py-3 bg-blue-600 hover:bg-blue-700 rounded font-medium text-white">
+                    登录
+                </button>
+            </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center mt-6 text-xs text-gray-600">
+            TG Monitor v2.0.0
+        </div>
+    </div>
+
+    <script>
+        async function handleLogin(e) {
+            e.preventDefault();
+
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('errorMsg');
+            const btn = e.target.querySelector('button');
+
+            btn.disabled = true;
+            btn.innerText = '验证中...';
+            errorMsg.classList.add('hidden');
+
+            try {
+                const res = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password })
+                });
+
+                if (res.ok) {
+                    // Redirect to settings or original destination
+                    const params = new URLSearchParams(window.location.search);
+                    const redirect = params.get('redirect') || '/settings';
+                    window.location.href = redirect;
+                } else {
+                    errorMsg.classList.remove('hidden');
+                    btn.disabled = false;
+                    btn.innerText = '登录';
+                    document.getElementById('password').value = '';
+                    document.getElementById('password').focus();
+                }
+            } catch (e) {
+                errorMsg.innerText = '网络错误，请重试';
+                errorMsg.classList.remove('hidden');
+                btn.disabled = false;
+                btn.innerText = '登录';
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,36 @@
+{
+  "channels": [
+    {
+      "id": "nodeseekc",
+      "keywords": [
+        "特价",
+        "补货",
+        "出",
+        "快讯",
+        "慢讯",
+        "讯"
+      ],
+      "enabled": true
+    },
+    {
+      "id": "linux_do_channel",
+      "keywords": [
+        "模型",
+        "福利",
+        "KIMI",
+        "AI",
+        "快讯",
+        "慢讯",
+        "讯"
+      ],
+      "enabled": true
+    },
+    {
+      "id": "goldie_test",
+      "keywords": [
+        "test"
+      ],
+      "enabled": true
+    }
+  ]
+}

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>仪表盘 - TG Monitor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            900: '#1a1b1e',
+                            800: '#25262b',
+                            700: '#2c2e33',
+                            600: '#373a40',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #1a1b1e;
+            color: #e4e5e7;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .card {
+            background-color: #25262b;
+            border: 1px solid #373a40;
+            border-radius: 0.5rem;
+        }
+
+        .input-dark {
+            background-color: #1a1b1e;
+            border: 1px solid #373a40;
+            color: white;
+        }
+
+        .btn {
+            transition: all 0.2s;
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        .nav-item {
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #9ca3af;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background-color: #373a40;
+            color: white;
+        }
+
+        /* Custom scrollbar for logs */
+        #logs::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #logs::-webkit-scrollbar-track {
+            background: #1a1b1e;
+        }
+
+        #logs::-webkit-scrollbar-thumb {
+            background: #373a40;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex">
+
+    <!-- Sidebar -->
+    <div class="w-64 bg-[#25262b] border-r border-[#373a40] flex flex-col p-4 fixed h-full">
+        <div class="mb-8 px-2">
+            <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-400">TG
+                Monitor</h1>
+            <p class="text-xs text-gray-500 mt-1">控制台 & 配置中心</p>
+        </div>
+
+        <nav class="space-y-2 flex-1">
+            <a href="/" class="nav-item active">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z">
+                    </path>
+                </svg>
+                仪表盘
+            </a>
+            <a href="/settings" class="nav-item">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+                    </path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                全局配置
+            </a>
+        </nav>
+
+        <div class="text-xs text-gray-600 px-2">
+            v2.0.0
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 ml-64 p-8 overflow-y-auto">
+        <div class="max-w-4xl mx-auto space-y-6">
+
+            <!-- Header / Status -->
+            <div class="card p-6 flex justify-between items-center shadow-lg">
+                <div>
+                    <h2 class="text-xl font-bold">运行状态</h2>
+                    <p class="text-gray-400 text-sm mt-1">Bot 进程监控</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div id="status-badge"
+                        class="px-4 py-2 rounded-full bg-red-500/10 text-red-500 font-bold border border-red-500/20 transition-all">
+                        ● Stopped
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="controlBot('start')"
+                            class="btn px-4 py-2 bg-green-600 hover:bg-green-700 rounded text-sm font-medium">启动</button>
+                        <button onclick="controlBot('restart')"
+                            class="btn px-4 py-2 bg-yellow-600 hover:bg-yellow-700 rounded text-sm font-medium">重启</button>
+                        <button onclick="controlBot('stop')"
+                            class="btn px-4 py-2 bg-red-600 hover:bg-red-700 rounded text-sm font-medium">停止</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logs -->
+            <div class="card p-6 shadow-lg flex flex-col h-[600px]">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+                            </path>
+                        </svg>
+                        运行日志
+                    </h2>
+                    <span class="text-xs text-gray-500">Auto-refreshing</span>
+                </div>
+                <div id="logs"
+                    class="flex-1 bg-[#1a1b1e] rounded p-4 font-mono text-xs text-green-400 overflow-y-auto whitespace-pre-wrap leading-relaxed border border-[#373a40]">
+                    Loading logs...</div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Control bot
+        async function controlBot(action) {
+            await fetch(`/api/${action}`, { method: 'POST' });
+            updateStatus();
+        }
+
+        // Update status UI
+        async function updateStatus() {
+            const res = await fetch('/api/status');
+            const data = await res.json();
+            const badge = document.getElementById('status-badge');
+
+            if (data.status === 'running') {
+                badge.className = "px-4 py-2 rounded-full bg-green-500/10 text-green-500 font-bold border border-green-500/20 transition-all shadow-[0_0_10px_rgba(34,197,94,0.3)]";
+                badge.innerText = "● Running";
+            } else {
+                badge.className = "px-4 py-2 rounded-full bg-red-500/10 text-red-500 font-bold border border-red-500/20 transition-all";
+                badge.innerText = "● Stopped";
+            }
+        }
+
+        // Fetch logs
+        async function fetchLogs() {
+            const res = await fetch('/api/logs');
+            const data = await res.json();
+            const logsEl = document.getElementById('logs');
+            // Check if user is near bottom to auto-scroll
+            const isNearBottom = logsEl.scrollHeight - logsEl.scrollTop - logsEl.clientHeight < 100;
+
+            logsEl.innerText = data.logs || "No logs yet...";
+
+            if (isNearBottom) {
+                logsEl.scrollTop = logsEl.scrollHeight;
+            }
+        }
+
+        // Init
+        setInterval(updateStatus, 2000);
+        setInterval(fetchLogs, 2000);
+        updateStatus();
+    </script>
+</body>
+
+</html>

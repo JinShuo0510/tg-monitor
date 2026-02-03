@@ -1,0 +1,10 @@
+telethon
+python-dotenv
+python-socks[asyncio]
+requests
+cloudscraper
+beautifulsoup4
+fastapi
+uvicorn[standard]
+jinja2
+itsdangerous
