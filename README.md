@@ -10,6 +10,18 @@
 - **Web 控制台**：可视化管理界面，实时查看日志和控制 Bot
 - **Tag 输入**：现代化的标签式关键词输入体验
 - **代理支持**：支持 HTTP/SOCKS5 代理
+- **密码保护**：云端部署安全防护
+
+## 📸 界面预览
+
+### 仪表盘
+![仪表盘](screenshots/dashboard.png)
+
+### 配置中心
+![配置中心](screenshots/settings.png)
+
+### 登录页面
+![登录页面](screenshots/login.png)
 
 ## 📋 环境要求
 
