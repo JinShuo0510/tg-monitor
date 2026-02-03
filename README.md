@@ -43,6 +43,9 @@ TG_API_HASH=your_api_hash_here
 TELEGRAM_BOT_TOKEN=123456:ABC-DEF...
 TELEGRAM_CHAT_ID=your_chat_id  # 你的 Chat ID (@userinfobot 查询)
 
+# Web UI 密码（用于云端部署安全）
+WEB_PASSWORD=your_secure_password
+
 # 代理配置 (可选)
 TG_PROXY_TYPE=http
 TG_PROXY_HOST=127.0.0.1
@@ -71,8 +74,10 @@ TG_PROXY_PORT=7897
 ```
 
 **频道 ID 说明：**
-- 公开频道：使用用户名（如 `nodeseekc`）
-- 私有频道：使用邀请链接哈希（如 `+ABC123xyz`）或数字 ID
+- **公开频道**：使用用户名（如 `nodeseekc`）
+- **私有频道**：使用邀请链接哈希（如 `+ABC123xyz`）或数字 ID
+  - ⚠️ **前提**：UserBot 账号必须已加入该私有频道
+  - 如何加入：用你的 Telegram 账号点击邀请链接加入即可
 
 **关键词语法（高级）：**
 
@@ -137,6 +142,13 @@ python web_server.py
 - Tag 式关键词输入（按 Enter 或逗号添加）
 - 动态添加/删除频道配置
 - 修改 Bot Token 和 Chat ID
+
+### 🔐 密码保护
+为了保护云端部署的安全，Web 控制台支持密码验证：
+- **仪表盘（只读）**：无需密码，可公开访问
+- **配置页面和 Bot 控制**：需要输入密码才能访问
+- 在 `.env` 中设置 `WEB_PASSWORD` 即可启用
+- 默认密码：`admin`（**强烈建议修改**）
 
 ## 📦 生产部署
 
