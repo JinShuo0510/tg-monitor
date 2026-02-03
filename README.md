@@ -140,7 +140,12 @@ python monitor_tg.py
 python web_server.py
 ```
 
-访问 http://127.0.0.1:8000 即可打开 Web 控制台。
+**访问地址：**
+- **本地访问**：http://127.0.0.1:8132
+- **局域网访问**：http://YOUR_LOCAL_IP:8132
+- **服务器部署**：通过反向代理（Nginx/Caddy）绑定域名
+
+> 💡 Web 服务器监听 `0.0.0.0:8132`，支持外网访问和反向代理。建议生产环境配合 HTTPS 使用。
 
 ## 🖥️ Web 控制台功能
 
@@ -205,6 +210,51 @@ pm2 startup
 ```bash
 nohup python web_server.py > web.log 2>&1 &
 ```
+
+### 使用 Nginx 反向代理（推荐）
+
+配置 Nginx 以支持 HTTPS 和域名访问：
+
+```nginx
+server {
+    listen 80;
+    server_name your-domain.com;
+    
+    # 重定向到 HTTPS
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name your-domain.com;
+    
+    # SSL 证书配置
+    ssl_certificate /path/to/cert.pem;
+    ssl_certificate_key /path/to/key.pem;
+    
+    location / {
+        proxy_pass http://127.0.0.1:8132;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        
+        # WebSocket 支持（如需要）
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+}
+```
+
+**快速配置（使用 Caddy）：**
+```caddy
+your-domain.com {
+    reverse_proxy localhost:8132
+}
+```
+
+> Caddy 会自动申请和续期 SSL 证书，配置更简单。
 
 ## 🔧 常见问题
 

@@ -255,5 +255,5 @@ async def shutdown_event():
 
 if __name__ == "__main__":
     import uvicorn
-    print(f"Web UI running at http://127.0.0.1:8132")
-    uvicorn.run(app, host="127.0.0.1", port=8132)
+    print(f"Web UI running at http://0.0.0.0:8132")
+    uvicorn.run(app, host="0.0.0.0", port=8132)
