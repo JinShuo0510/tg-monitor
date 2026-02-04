@@ -281,8 +281,12 @@ async def handler(event):
         logger.warning(f"[DEBUG] chat_id {chat_id} not in CHANNEL_CONFIGS. Available: {list(CHANNEL_CONFIGS.keys())}")
         return
 
-    # Check for matched keywords using advanced matching
-    matched_keyword = match_keywords(message_text, keywords)
+    # Extract first line (title) for keyword matching
+    # This prevents false positives from content inside code blocks
+    first_line = message_text.split('\n')[0] if message_text else ''
+    
+    # Check for matched keywords using advanced matching (only on title)
+    matched_keyword = match_keywords(first_line, keywords)
             
     if matched_keyword:
         logger.info(f"Keyword matched: {matched_keyword}")
